@@ -9,7 +9,7 @@ const User = sequelize.define('user', {
         allowNull: false,
         primaryKey: true
     },
-    email: {
+    username: {
         type: Sequelize.STRING,
         allowNull: false
     },

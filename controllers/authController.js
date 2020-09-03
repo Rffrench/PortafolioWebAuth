@@ -3,12 +3,12 @@
 const User = require('../models/userModel');
 
 exports.postLogin = (req, res, next) => {
-    const email = req.body.email;
+    const username = req.body.username;
     const password = req.body.password;
     const name = req.body.name;
 
     User.create({
-        email: email,
+        username: username,
         password: password,
         name: name
     })

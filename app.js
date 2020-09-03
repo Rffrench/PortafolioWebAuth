@@ -16,7 +16,8 @@ const sequelize = require('./util/database');
 const authRoutes = require('./routes/authRoutes');
 
 // Adding middleware (these are executed for every request)
-app.use(bodyParser.urlencoded({ extended: false }));
+//app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(cors());
 
 // Using the routes
