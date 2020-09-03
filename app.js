@@ -5,7 +5,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
-
 const app = express();
 const PORT = process.env.PORT || 3000
 
@@ -24,6 +23,11 @@ app.use(cors());
 app.use('/api/v1', authRoutes);
 
 
+app.get('/', (req, res, next) => {
+    res.send('Hey from AWS');
+})
+
+
 sequelize.sync()
     .then(result => {
         console.log(result);
@@ -32,3 +36,5 @@ sequelize.sync()
     .catch(err => {
         console.log(err);
     })
+
+console.log('sssdss');
