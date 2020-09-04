@@ -5,7 +5,11 @@ const app = express();
 
 const authController = require('../controllers/authController');
 
+router.post('/auth/signup', authController.postSignup);
+
 router.post('/auth/login', authController.postLogin);
+
+
 
 
 module.exports = router;

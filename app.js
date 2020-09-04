@@ -8,6 +8,9 @@ const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 3000
 
+const User = require('./models/userModel');
+const UserRole = require('./models/userRole');
+
 // Database
 const sequelize = require('./util/database');
 
@@ -26,6 +29,9 @@ app.use('/api/v1', authRoutes);
 app.get('/', (req, res, next) => {
     res.send('Hey from AWS');
 })
+
+// Se definen las relaciones. Necesario usando Sequelize
+User.belongsTo(UserRole, { as: 'role' });
 
 
 sequelize.sync()
