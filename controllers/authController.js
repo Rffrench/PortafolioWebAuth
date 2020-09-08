@@ -85,8 +85,8 @@ exports.postLogin = (req, res, next) => {
                     username: loadedUser.username,
                     userId: loadedUser.id.toString()
                 },
-                'somesupersecretsecret',
-                { expiresIn: '1h' }
+                'llavetoken',
+                { expiresIn: '6h' }
             );
             res.status(200).json({ token: token, userId: loadedUser.id.toString(), roleId: loadedUser.roleId.toString() }); // Se devuelve JSON con token e ID de usuario
         })
