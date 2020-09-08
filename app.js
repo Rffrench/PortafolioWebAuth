@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 const app = express();
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 8082
 
 const User = require('./models/userModel');
 const UserRole = require('./models/userRole');
@@ -22,8 +22,8 @@ const authRoutes = require('./routes/authRoutes');
 app.use(bodyParser.json());
 app.use(cors());
 
-// Using the routes
-app.use('/api/v1', authRoutes);
+// Using the routes. SIempre anteponer /api/v1 pa todo
+app.use('/auth', authRoutes);
 
 
 app.get('/', (req, res, next) => {

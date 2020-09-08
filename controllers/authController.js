@@ -13,23 +13,34 @@ exports.postSignup = (req, res, next) => {
     const lastName = req.body.lastName;
     const roleId = 1;
 
-    // Se transforma en hash la contraseña
-    bcrypt
-        .hash(password, 12) // 2do param es la longitud del SALT para añadirle mayor seguridad.
-        .then(hashedPw => {
-            console.log(hashedPw); // COntraseña hasheada
-            return User.create({ // Método Sequelize que inserta un usuario en la BD. Devuelve Promesa por eso el return
-                email: email,
-                username: username,
-                password: hashedPw,
-                name: name,
-                lastName: lastName,
-                roleId: roleId
-            });
-        })
-        .then(result => {
-            res.status(201).json({ message: 'User created!', userId: result.id }); // Si se crea el usuario se manda JSON con mensaje e ID
-        })
+    // VALIDAR QUE NO EXISTA EL USERNAME
+    User.findOne({
+        where: { username: username }
+    }).then(user => {
+        // Si ya existe el usuario, error
+        if (user) {
+            const error = new Error('El nombre de usuario ya existe');
+            error.statusCode = 401;
+            throw error;
+        }
+
+        // Si no existe Se transforma en hash la contraseña y se agrega a la DB. Promesas anidadas pq o sino se ejecutarían los then() siguientes
+        return bcrypt
+            .hash(password, 12) // 2do param es la longitud del SALT para añadirle mayor seguridad.
+            .then(hashedPw => {
+                return User.create({ // Método Sequelize que inserta un usuario. Devuelve Promesa por eso el return
+                    email: email,
+                    username: username,
+                    password: hashedPw,
+                    name: name,
+                    lastName: lastName,
+                    roleId: roleId
+                });
+            })
+            .then(result => {
+                res.status(201).json({ message: 'User created!', userId: result.id }); // Si se crea el usuario se manda JSON con mensaje e ID
+            })
+    })
         .catch(err => {
             if (!err.statusCode) {
                 err.statusCode = 500;
@@ -77,7 +88,7 @@ exports.postLogin = (req, res, next) => {
                 'somesupersecretsecret',
                 { expiresIn: '1h' }
             );
-            res.status(200).json({ token: token, userId: loadedUser.id.toString() }); // Se devuelve JSON con token e ID de usuario
+            res.status(200).json({ token: token, userId: loadedUser.id.toString(), roleId: loadedUser.roleId.toString() }); // Se devuelve JSON con token e ID de usuario
         })
         .catch(err => {
             if (!err.statusCode) {
