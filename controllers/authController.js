@@ -3,9 +3,11 @@ const User = require('../models/userModel');
 const bcrypt = require('bcryptjs'); // Encryption
 const jwt = require('jsonwebtoken'); // JWT Tokens
 
+// Toda API REST debe enviar siempre el código HTTP de respuesta dependiendo el resultado de esta. Por ej: 201 se creó algo, 403 Forbidden, 200 OK, etc
 
 // Registro de Usuario
 exports.postSignup = (req, res, next) => {
+    // TODO: Deestructure
     const email = req.body.email;
     const username = req.body.username;
     const password = req.body.password;
@@ -53,6 +55,7 @@ exports.postSignup = (req, res, next) => {
 
 // Login Usuario
 exports.postLogin = (req, res, next) => {
+    // TODO: Deestructure
     const username = req.body.username;
     const password = req.body.password;
     let loadedUser; // Usuario cargado de la BD
@@ -79,11 +82,12 @@ exports.postLogin = (req, res, next) => {
                 error.statusCode = 401;
                 throw error;
             }
-            // Sino, se crea TOKEN para el usuario
+            // Sino, se crea TOKEN para el usuario. Los campos que quiero que tenga el token se asignan acá
             const token = jwt.sign(
                 {
                     username: loadedUser.username,
-                    userId: loadedUser.id.toString()
+                    userId: loadedUser.id.toString(),
+                    roleId: loadedUser.roleId.toString()
                 },
                 'llavetoken',
                 { expiresIn: '6h' }
