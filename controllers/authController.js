@@ -95,6 +95,7 @@ exports.postLogin = (req, res, next) => {
             res.status(200).json({ token: token, userId: loadedUser.id.toString(), roleId: loadedUser.roleId.toString() }); // Se devuelve JSON con token e ID de usuario
         })
         .catch(err => {
+
             if (!err.statusCode) {
                 err.statusCode = 500;
             }
