@@ -27,7 +27,7 @@ app.use('/auth', authRoutes);
 
 
 app.get('/', (req, res, next) => {
-    res.send('Hey from AWS');
+    res.send('Hey from Auth service');
 })
 
 // Se definen las relaciones. Necesario usando Sequelize
